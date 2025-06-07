@@ -30,10 +30,12 @@ namespace DatabaseLayer
 
         public IEnumerable<Order> GetAll()
         {
+            List<Order> list = new List<Order>();
             using (var db = new HostelDBContext())
             {
-                return db.Orders;
+                list = db.Orders.ToList();
             }
+            return list;
         }
 
         public Order? GetById(int id)

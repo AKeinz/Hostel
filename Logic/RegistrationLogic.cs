@@ -18,12 +18,12 @@ namespace Logic
     {
         public readonly IUsersRepository usersRepository;
 
-        private string lastname = "";
-        private string firstname = "";
-        private string patronymic = "";
-        private string phone = "";
-        private string login = "";
-        private string password = "";
+        private string lastname = " ";
+        private string firstname = " ";
+        private string patronymic = " ";
+        private string phone = " ";
+        private string login = " ";
+        private string password = " ";
         private string code = "";
 
         public string Lastname
@@ -56,28 +56,30 @@ namespace Logic
             get { return password; }
             set { password = value; OnPropertyChanged(nameof(Password)); }
         }
-        public string Code
+        /*public string Code
         {
             get { return code; }
             set { code = value; OnPropertyChanged(nameof(Code)); }
-        }
-        private string sentCode;
+        }*/
+        /*private string sentCode;*/
         public ICommand CheckDataCommand { get; set; }
         public ICommand CheckCodeCommand { get; set; }
+        public ICommand closeCommand { get; set; }
         private IMessageContrroller messageController;
 
         public RegistrationLogic()
         {
-            this.usersRepository = usersRepository;
+            this.usersRepository = new UsersRepository();
             CheckDataCommand = new RelayCommand(checkData);
-            CheckCodeCommand = new RelayCommand(checkCode);
+            closeCommand = new RelayCommand(Close);
+            //CheckCodeCommand = new RelayCommand(checkCode);
             messageController = new MessageController.MessageController();
         }
         public RegistrationLogic(IUsersRepository usersRepository)
         {
             this.usersRepository = usersRepository;
             CheckDataCommand = new RelayCommand(checkData);
-            CheckCodeCommand = new RelayCommand(checkCode);
+            //CheckCodeCommand = new RelayCommand(checkCode);
             messageController = new MessageController.MessageController();
         }
 
@@ -85,53 +87,58 @@ namespace Logic
         {
             if (IsUserExist()) 
             {
-                throw new HostelException("Пользователь уже существует");
+                showMessage("Пользователь уже существует");
+                return;
             }
-            sendCode();
+            addUser();
+            showMessage("Успешно");
+            closeCommand.Execute(this);
+            //sendCode();  //пропуск проверки кода
         }
 
 
         public bool IsUserExist() 
         {
-            return usersRepository.IsUserExist(Phone, Roles.Client.ToString(), Login, Password);
+            return usersRepository.IsUserExist(Phone, Roles.Client, Login, Password);
         }
-        private void sendCode()
+        /*private void sendCode()
         {
-            sentCode = generateCode();
+            sentCode = generateCode();se
             messageController.SendMessage(Phone, Code);
             displayShowCode();
-        }
+        }*/
 
-        public string generateCode()
+        /*public string generateCode()
         {
             Random random = new Random();
             int code = random.Next(1000, 9999);
             sentCode = code.ToString();
             return code.ToString();
-        }
+        }*/
 
-        private void checkCode(object param)
+        /*private void checkCode(object param)
         {
             if (!isRightCode())
             {
                 throw new HostelException("Неверный код");
             }
             addUser();
-        }
+        }*/
 
-        public bool isRightCode()
+       /* public bool isRightCode()
         {
             if (Code.Equals(sentCode))
             {
                 return true;
             }
             return false;
-        }
+        }*/
 
         private void addUser()
         {
             usersRepository.Add(new User()
             {
+                Id = usersRepository.GetMaxId() + 1,
                 Firstname = Firstname,
                 Lastname = Lastname,
                 Patronymic = Patronymic,
@@ -141,16 +148,21 @@ namespace Logic
             });
         }
 
-        private void displayShowCode()
+        private void showMessage(string message)
         {
-
+            NotifyMessage?.Invoke(message);
         }
 
-        private void Close()
+        private void Close(object a)
         {
-
+            NotifyClose?.Invoke();
         }
 
+
+        public delegate void AuthHandler();
+        public delegate void AuthErrorsHandler(string message);
+        public event AuthHandler? NotifyClose;
+        public event AuthErrorsHandler? NotifyMessage;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

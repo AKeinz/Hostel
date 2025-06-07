@@ -15,11 +15,18 @@ namespace Logic
     {
         public readonly IUsersRepository UsersRepository;
 
-        private List<User> users = new List<User>();
+        private List<User> users = new List<User>() { new User() { Firstname = "hfhfh" } };
         public List<User> Users
         {
             get { return users; }
             set { users = value; OnPropertyChanged(nameof(Users)); }
+        }
+
+        private List<User> clients = new List<User>() { new User() { Firstname = "hfhfh" } };
+        public List<User> Clients
+        {
+            get { return clients; }
+            set { clients = value; OnPropertyChanged(nameof(Clients)); }
         }
 
         public ICommand AddUserCommand { get; set; }
@@ -28,7 +35,17 @@ namespace Logic
         public UsersLogic(IUsersRepository usersRepository)
         {
             UsersRepository = usersRepository;
-            Users = getUsers();
+            getUsers();
+            getClients();
+            AddUserCommand = new RelayCommand(displayAddUser);
+            ChangeUserCommand = new RelayCommand(displayChangeUser);
+        }
+
+        public UsersLogic()
+        {
+            UsersRepository = new UsersRepository();
+            getUsers();
+            getClients();
             AddUserCommand = new RelayCommand(displayAddUser);
             ChangeUserCommand = new RelayCommand(displayChangeUser);
         }
@@ -37,6 +54,19 @@ namespace Logic
         {
             return UsersRepository.GetAll().ToList();
         }
+
+        private List<User> getClients()
+        {
+            List<User> clients = new List<User>();
+            foreach(User user in Users)
+            {
+                if (user.Role.Equals(Roles.Client))
+                    clients.Add(user);
+            }
+            Clients = clients;
+            return clients;
+        }
+
         private void displayAddUser(object param)
         {
 
@@ -46,11 +76,10 @@ namespace Logic
 
         }// что за shoqMessage
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

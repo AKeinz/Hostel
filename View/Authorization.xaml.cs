@@ -18,12 +18,16 @@ namespace View
     /// </summary>
     public partial class MainWindow : Window
     {
+        AuthorizationLogic Auth = new AuthorizationLogic();
         public MainWindow()
         {
-            AuthorizationLogic Logic = new AuthorizationLogic();
-            Logic.NotifyRegistration += DisplayRegistration;
-            Logic.NotifyMain += DisplayMain;
-            DataContext = Logic;
+            Auth.NotifyRegistration += DisplayRegistration;
+            Auth.NotifyClient += DisplayClient; //передача id
+            Auth.NotifyAdmin += DisplayAdmin;
+            Auth.NotifyReception += DisplayReception;
+            Auth.NotifyService += DisplayService;
+            Auth.NotifyWrongUser += DisplayMessage;
+            DataContext = Auth;
             InitializeComponent();
         }
 
@@ -33,10 +37,51 @@ namespace View
             registration.Show();
         }
 
-        private void DisplayMain()
+        private void DisplayClient(int id)
         {
-            ClientMain registration = new ClientMain();
-            registration.Show();
+            ClientMain reception = new ClientMain(id);
+            reception.Closed += this.Showd;
+            reception.Show();
+            Hide();
+        }
+
+        private void Showd(object? sender, EventArgs e)
+        {
+            ClearBoxes();
+            Show();
+        }
+
+        private void ClearBoxes()
+        {
+            Auth.Password = "";
+            Auth.Login = "";
+        }
+
+        private void DisplayReception(int id)
+        {
+            Reception reception = new Reception(id);
+            reception.Closed += this.Showd;
+            reception.Show();
+            Hide();
+        }
+        private void DisplayService(int id)
+        {
+            Service reception = new Service();
+            reception.Closed += this.Showd;
+            reception.Show();
+            Hide();
+        }
+        private void DisplayAdmin(int id)
+        {
+            Administrator reception = new Administrator(id);
+            reception.Closed += this.Showd;
+            reception.Show();
+            Hide();
+        }
+
+        private void DisplayMessage(string message)
+        {
+            MessageBox.Show(message);
         }
     }
 }

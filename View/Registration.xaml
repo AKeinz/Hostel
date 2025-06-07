@@ -5,8 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
-        Title="Registration" Height="450" Width="800">
-    <Grid>
-        
+        Title="Registration" Height="450" Width="500" ResizeMode="NoResize">
+    <Grid Style="{StaticResource BodyColor}">
+        <Label Content="Заполните поля" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
+        <Button Content="Назад" HorizontalAlignment="Left" Margin="67,339,0,0" VerticalAlignment="Top" Height="44" Width="124" Command="{Binding closeCommand}"/>
+        <Button Content="Далее " HorizontalAlignment="Left" Margin="303,339,0,0" VerticalAlignment="Top" Height="44" Width="124" Command="{Binding CheckDataCommand}"/>
+
+        <Label Content="Фамилия" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="108,71,0,0" TextWrapping="Wrap" Text="{Binding Lastname}"  VerticalAlignment="Top" Width="355"/>
+
+        <Label Content="Имя" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="108,101,0,0" TextWrapping="Wrap" Text="{Binding Firstname}"  VerticalAlignment="Top" Width="355"/>
+
+        <Label Content="Отчество" HorizontalAlignment="Left" Margin="10,128,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="108,128,0,0" TextWrapping="Wrap" Text="{Binding Patronymic}"  VerticalAlignment="Top" Width="355"/>
+
+        <Label Content="Телефон" HorizontalAlignment="Left" Margin="11,154,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="108,158,0,0" TextWrapping="Wrap" Text="{Binding Phone}"  VerticalAlignment="Top" Width="355"/>
+
+        <Label Content="Логин" HorizontalAlignment="Left" Margin="11,185,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="108,189,0,0" TextWrapping="Wrap" Text="{Binding Login}"  VerticalAlignment="Top" Width="355"/>
+
+        <Label Content="Пароль" HorizontalAlignment="Left" Margin="11,216,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="108,220,0,0" TextWrapping="Wrap" Text="{Binding Password}"  VerticalAlignment="Top" Width="355"/>
     </Grid>
 </Window>

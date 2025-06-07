@@ -31,6 +31,15 @@ namespace Logic
             AddOrderCommand = new RelayCommand(displayAddOrder);
             ChangeOrderCommand = new RelayCommand(displayChangeOrder);
         }
+
+        public OrdersLogic()
+        {
+            this.ordersRepository = new OrdersRepository();
+            Orders = getOrders();
+            AddOrderCommand = new RelayCommand(displayAddOrder);
+            ChangeOrderCommand = new RelayCommand(displayChangeOrder);
+        }
+
         private List<Order> getOrders()
         {
             return ordersRepository.GetAll().ToList();

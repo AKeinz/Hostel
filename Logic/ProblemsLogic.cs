@@ -55,6 +55,16 @@ namespace Logic
             ChangeProblemCommand = new RelayCommand(displayChangeProblem);
         }
 
+        public ProblemsLogic()
+        {
+            this.problemsRepository = new ProblemsRepository();
+            this.roomsRepository = new RoomsRepository();
+            Room_numbers = getRoomNumbers();
+            Problems = getProblems();
+            AddProblemCommand = new RelayCommand(addProblem);
+            ChangeProblemCommand = new RelayCommand(displayChangeProblem);
+        }
+
         private List<Problem> getProblems()
         {
             return problemsRepository.GetAll().ToList();

@@ -5,6 +5,7 @@ C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\ne
 C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\net8.0\MessageController.AssemblyInfoInputs.cache
 C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\net8.0\MessageController.AssemblyInfo.cs
 C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\net8.0\MessageController.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\net8.0\MessageController.sourcelink.json
 C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\net8.0\MessageController.dll
 C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\net8.0\refint\MessageController.dll
 C:\Users\user\Desktop\Проектиров\Hostel\MessageController\obj\Debug\net8.0\MessageController.pdb

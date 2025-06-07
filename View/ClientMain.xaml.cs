@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DatabaseLayer;
+using Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,17 @@ namespace View
     /// </summary>
     public partial class ClientMain : Window
     {
-        public ClientMain()
+        public ClientMain(int id)
         {
+            //roomsDataGrid.DataContext = new RoomsLogic(new RoomsRepository());
             InitializeComponent();
+            CurrentUser currentUser = new CurrentUser(id);
+            UserGrid.DataContext = currentUser;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

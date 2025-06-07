@@ -7,10 +7,19 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Administrator.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="ClientMain.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Reception.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Registration.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Service.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

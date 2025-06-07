@@ -12,6 +12,7 @@ C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.G
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.AssemblyInfoInputs.cache
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.AssemblyInfo.cs
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.sourcelink.json
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.csproj.Up2Date
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.dll
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\refint\Logic.dll

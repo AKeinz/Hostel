@@ -8,6 +8,7 @@ C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0
 C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0\DatabaseLayer.AssemblyInfoInputs.cache
 C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0\DatabaseLayer.AssemblyInfo.cs
 C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0\DatabaseLayer.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0\DatabaseLayer.sourcelink.json
 C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0\Database.D87FB5DC.Up2Date
 C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0\DatabaseLayer.dll
 C:\Users\user\Desktop\Проектиров\Hostel\DatabaseLayer\obj\Debug\net8.0\refint\DatabaseLayer.dll

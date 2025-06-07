@@ -26,7 +26,10 @@ namespace DatabaseLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            modelBuilder.Entity<User>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<User>().HasData(new User() { 
             Firstname = "admin",
             Lastname = "admin",
@@ -55,7 +58,8 @@ namespace DatabaseLayer
         }
 
         public HostelDBContext()
-        {
+        {  
+            //Database.EnsureDeleted();
             bool isNew = Database.EnsureCreated();
             if (isNew)
             {

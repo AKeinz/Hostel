@@ -30,10 +30,12 @@ namespace DatabaseLayer
 
         public IEnumerable<User> GetAll()
         {
+            List<User> list;
             using (var db = new HostelDBContext())
             {
-                return db.Users;
+                list =  db.Users.ToList();
             }
+            return list;    
         }
 
         public User? GetById(int id)
@@ -54,7 +56,7 @@ namespace DatabaseLayer
             }
         }
 
-        public bool IsUserExist(string phone, string role, string login, string password) {
+        public bool IsUserExist(string phone, Roles role, string login, string password) {
 
 
             List<User> users = new List<User>();
@@ -67,15 +69,6 @@ namespace DatabaseLayer
             else { return false; }
         }
 
-        public List<User> GetClient(string firstname, string role)
-        {
-            List<User> users = new List<User>();
-            using (var db = new HostelDBContext())
-            {
-                users = db.Users.Where(u => u.Firstname == firstname && u.Role.Equals(role)).ToList();
-            }
-            return users;
-        }
 
         public User? GetByLoginPass(string login, string password)
         {
@@ -89,6 +82,15 @@ namespace DatabaseLayer
                 }
             }
             return null;
+        }
+
+        public int GetMaxId()
+        {
+            List<User>? users;
+            using (var db = new HostelDBContext())
+            {
+                return db.Users.Max(u => u.Id);
+            }
         }
     }
 }

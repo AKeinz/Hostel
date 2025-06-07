@@ -10,10 +10,11 @@ namespace DatabaseLayer
 {
     public interface IUsersRepository : IRepository<User>
     {
-        public bool IsUserExist(string phone, string role, string login, string password);
+        public bool IsUserExist(string phone, Roles role, string login, string password);
 
-        public List<User> GetClient(string firstname, string role);
 
         public User? GetByLoginPass(string login, string password);
+        public int GetMaxId();
+
     }
 }

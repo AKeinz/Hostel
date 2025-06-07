@@ -33,9 +33,18 @@ namespace Logic
             SelectRoomCommand = new RelayCommand(displaySelectedRoom);
         }
 
-        private List<Room> getRooms()
+        public RoomsLogic()
         {
-            return roomsRepository.GetAll().ToList();
+            roomsRepository = new RoomsRepository();
+            Rooms = getRooms();
+            AddRoomCommand = new RelayCommand(displayAddRoom);
+            SelectRoomCommand = new RelayCommand(displaySelectedRoom);
+        }
+
+        private List<Room> getRooms()
+        { 
+            List<Room> list = roomsRepository.GetAll().ToList();
+            return list;
         }
         private void displayAddRoom(object param)
         {

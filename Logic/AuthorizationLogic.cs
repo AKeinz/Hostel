@@ -15,14 +15,14 @@ namespace Logic
     public class AuthorizationLogic : INotifyPropertyChanged
     {
         private int user_id;
-        private string loginOrPhone="";
-        public string LoginOrPhone
+        private string login="";
+        public string Login
         {
-            get { return loginOrPhone; }
+            get { return login; }
             set
             {
-                loginOrPhone = value;
-                OnPropertyChanged("LoginOrPhone");
+                login = value;
+                OnPropertyChanged("Login");
             }
         }
         private string password = "";
@@ -44,14 +44,14 @@ namespace Logic
         public AuthorizationLogic()
         {
             GetUserCommand = new RelayCommand(GetUser);
-            DisplayMainCommand = new RelayCommand(DisplayMain);
+            DisplayMainCommand = new RelayCommand(DisplayAdmin);
             DisplayRegistrationCommand = new RelayCommand(DisplayRegistration);
         }
         public AuthorizationLogic(IUsersRepository usersRepository)
         {
             this.usersRepository = usersRepository;
             GetUserCommand = new RelayCommand(GetUser);
-            DisplayMainCommand = new RelayCommand(DisplayMain);
+            DisplayMainCommand = new RelayCommand(DisplayAdmin);
             DisplayRegistrationCommand = new RelayCommand(DisplayRegistration);
         }
 
@@ -62,22 +62,46 @@ namespace Logic
 
         public bool GetUser()
         {
-            User? user = usersRepository.GetByLoginPass(LoginOrPhone, Password);
-            if (user != null)
+            User? user = usersRepository.GetByLoginPass(Login, Password);
+            if (user is null)
             {
-                DisplayMain(user.Id);
-                return true;
+                NotifyWrongUser?.Invoke("Пользователь не найден");
+                return false;
+            }
+            switch (user.Role)
+            {
+                case Roles.Admin:
+                    DisplayAdmin(user.Id);
+                    return true;
+                case Roles.Client:
+                    DisplayClient(user.Id);
+                    return true;
+                case Roles.Service:
+                    DisplayService(user.Id);
+                    return true;
+                case Roles.Reception:
+                    DisplayReception(user.Id);
+                    return true;
             }
             return false;
         }
 
         private void DisplayRegistration(object param) { NotifyRegistration?.Invoke(); }
 
-        private void DisplayMain(object param) { NotifyMain?.Invoke(); }
+        private void DisplayAdmin(object param) { NotifyAdmin?.Invoke((int)param); }
+        private void DisplayClient(object param) { NotifyClient?.Invoke((int)param); }
+        private void DisplayReception(object param) { NotifyReception?.Invoke((int)param); }
+        private void DisplayService(object param) { NotifyService?.Invoke((int)param); }
 
-        public delegate void AuthHandler();
-        public event AuthHandler? NotifyRegistration;
-        public event AuthHandler? NotifyMain;
+        public delegate void AuthHandler(int id);
+        public delegate void RegistHandler();
+        public delegate void AuthErrorsHandler(string message);
+        public event RegistHandler? NotifyRegistration;
+        public event AuthHandler? NotifyClient;
+        public event AuthHandler? NotifyReception;
+        public event AuthHandler? NotifyAdmin;
+        public event AuthHandler? NotifyService;
+        public event AuthErrorsHandler? NotifyWrongUser;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

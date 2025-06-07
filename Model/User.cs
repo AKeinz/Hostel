@@ -22,7 +22,8 @@ namespace Model
         private string phone;
         private string login;
         private string password;*/
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } = 1;
         public Roles Role { get; set; } = Roles.Client;
         public string Lastname { get; set; } = " ";

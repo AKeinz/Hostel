@@ -92,7 +92,7 @@ namespace Logic
 
         public bool IsUserExist()
         {
-            return usersRepository.IsUserExist(Phone, Enum.GetName(Role), Login, Password);
+            return usersRepository.IsUserExist(Phone, Role, Login, Password);
         }
         private void sendCode()
         {

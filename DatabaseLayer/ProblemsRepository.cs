@@ -27,10 +27,12 @@ namespace DatabaseLayer
 
         public IEnumerable<Problem> GetAll()
         {
+            List<Problem> result = new List<Problem>();
             using (var db = new HostelDBContext())
             {
-                return db.Problems;
+                result = db.Problems.ToList();
             }
+            return result;
         }
 
         public Problem GetById(int id)

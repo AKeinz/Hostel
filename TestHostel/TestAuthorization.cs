@@ -14,7 +14,7 @@ namespace TestHostel
         {
             authorization = new AuthorizationLogic()
             {
-                LoginOrPhone = "admin",
+                Login = "admin",
                 Password = "admin"
             };
             bool result = authorization.GetUser();
@@ -26,7 +26,7 @@ namespace TestHostel
         {
             authorization = new AuthorizationLogic()
             {
-                LoginOrPhone = "notEXIST",
+                Login = "notEXIST",
                 Password = "43434"
             };
             bool result = authorization.GetUser();
