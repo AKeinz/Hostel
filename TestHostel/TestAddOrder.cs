@@ -2,11 +2,6 @@
 using Logic;
 using Model;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestHostel
 {
@@ -46,6 +41,9 @@ namespace TestHostel
             mockOrdersRepository.Setup(r => r.GetByDateAndRoom(roomNumber, ind, outd)).Returns([
                 new Order()
             ]);
+            mockRoomsRepository.Setup(r => r.GetById(roomNumber)).Returns(
+                new Room() { Room_number = roomNumber, Status = RoomStatuses.Free}
+            );
             var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object);
 
             List<Order>? numbers = addOrderLogic.isRoomAvailable(roomNumber, ind, outd);
@@ -65,6 +63,9 @@ namespace TestHostel
             DateTime ind = DateTime.Now.AddDays(-2);
             DateTime outd = DateTime.Now.AddDays(+1);
             mockOrdersRepository.Setup(r => r.GetByDateAndRoom(roomNumber, ind, outd)).Returns([]);
+            mockRoomsRepository.Setup(r => r.GetById(roomNumber)).Returns(
+               new Room() { Room_number = roomNumber, Status = RoomStatuses.Busy }
+           );
             var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object);
 
             List<Order> numbers = addOrderLogic.isRoomAvailable(roomNumber, ind, outd);
@@ -105,7 +106,7 @@ namespace TestHostel
             var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object);
 
             List<Order> numbers = addOrderLogic.isClientAvailable(client, ind, outd);
-            
+
             Assert.AreEqual(numbers.Count, 0);
 
         }
@@ -122,17 +123,20 @@ namespace TestHostel
 
             mockOrdersRepository.Setup(r => r.GetByDateAndClient(client, ind, outd)).Returns([]);
             mockOrdersRepository.Setup(r => r.GetByDateAndRoom(client, ind, outd)).Returns([]);
+            mockRoomsRepository.Setup(r => r.GetById(456)).Returns(
+                new Room() { Room_number = 456, Status = RoomStatuses.Free }
+            );
 
-            var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object)
+            var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object);
+            Order order = new Order()
             {
-                Room_number = 456,
+                Room = 456,
                 In_day = ind,
                 Out_day = outd,
-                Client_id = client,
-                Number_of_people =1
+                Client = client,
+                Number_of_people = 1
             };
-
-            addOrderLogic.AddOrderCommand.Execute(null);
+            addOrderLogic.AddOrder(order);
 
 
             mockOrdersRepository.Verify(r => r.Add(It.Is<Order>(p =>
@@ -159,17 +163,21 @@ namespace TestHostel
 
             mockOrdersRepository.Setup(r => r.GetByDateAndClient(client, ind, outd)).Returns([new Order()]);
             mockOrdersRepository.Setup(r => r.GetByDateAndRoom(client, ind, outd)).Returns([]);
+            mockRoomsRepository.Setup(r => r.GetById(456)).Returns(
+               new Room() { Room_number = 456, Status = RoomStatuses.Free }
+           );
 
-            var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object)
+            var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object);
+            Order order = new Order()
             {
-                Room_number = 456,
+                Room = 456,
                 In_day = ind,
                 Out_day = outd,
-                Client_id = client,
+                Client = client,
                 Number_of_people = 1
             };
 
-            addOrderLogic.AddOrderCommand.Execute(null);
+            addOrderLogic.AddOrder(order);
 
 
             mockOrdersRepository.Verify(r => r.Add(It.Is<Order>(p =>
@@ -191,22 +199,26 @@ namespace TestHostel
             var mockOrdersRepository = new Mock<IOrdersRepository>();
 
             int room = 0;
-            DateTime ind = DateTime.Now.AddDays(-2);
-            DateTime outd = DateTime.Now.AddDays(+1);
+            DateTime ind = DateTime.Now.AddDays(-2).Date;
+            DateTime outd = DateTime.Now.AddDays(+1).Date;
 
             mockOrdersRepository.Setup(r => r.GetByDateAndClient(room, ind, outd)).Returns([]);
             mockOrdersRepository.Setup(r => r.GetByDateAndRoom(room, ind, outd)).Returns([new Order()]);
+            mockRoomsRepository.Setup(r => r.GetById(room)).Returns(
+               new Room() { Room_number = room, Status = RoomStatuses.Busy }
+           );
 
-            var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object)
+            var addOrderLogic = new AddOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object);
+            Order order = new Order()
             {
-                Room_number = room,
+                Room = room,
                 In_day = ind,
                 Out_day = outd,
-                Client_id = 12,
+                Client = 12,
                 Number_of_people = 1
             };
 
-            addOrderLogic.AddOrderCommand.Execute(null);
+            addOrderLogic.AddOrder(order);
 
 
             mockOrdersRepository.Verify(r => r.Add(It.Is<Order>(p =>

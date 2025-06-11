@@ -4,32 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
-        xmlns:Logic="clr-namespace:Logic;assembly=Logic"
+        xmlns:ViewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="Окно клиента" Height="450" Width="800" MinWidth="800" MinHeight="450">
+
     <Grid Style="{StaticResource TabColor}">
         <TabControl>
             <TabItem Header="Главная">
                 <Grid>
                     <Grid Style="{StaticResource SearchColor}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="11*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Label Content="Поиск комнаты" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-                            <TextBox HorizontalAlignment="Left" Margin="117,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="482" Grid.Row="1"/>
-                            <Button Content="Найти" HorizontalAlignment="Left" Margin="646,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="93" Style="{StaticResource SearchButtonColor}"/>
-                        </Grid>
-                        <Grid Grid.Row="1" Style="{StaticResource BodyColor}">
+                        
+                        <Grid Style="{StaticResource BodyColor}">
                             <ScrollViewer>
                                 <StackPanel>
 
                                     <ItemsControl x:Name="roomsGrid" ItemsSource="{Binding Rooms}" HorizontalAlignment="Center" Padding="0,20,0,0">
 
-                                        <ItemsControl.DataContext>
-                                            <Logic:RoomsLogic></Logic:RoomsLogic>
-                                        </ItemsControl.DataContext>
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal" />
@@ -39,7 +29,15 @@
                                             <DataTemplate>
                                                 <StackPanel Orientation="Vertical" Margin="5">
                                                     <Border BorderBrush="Black" BorderThickness="1" Background="White" Margin="5" Width="230" Height="200">
-                                                        <Image Source="{Binding Photo}"/>
+                                                        <Button Command="{Binding DataContext.DisplaySelectRoomCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+            CommandParameter="{Binding}" >
+                                                            <Image>
+                                                                <Image.Source>
+                                                                    <BitmapImage UriSource="{Binding Photo}" CacheOption="OnDemand"/>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </Button>
+
                                                     </Border>
                                                     <TextBlock Text="{Binding Room_number, StringFormat='Комната №{0}'}" Margin="0,0,0,2" HorizontalAlignment="Center"/>
                                                 </StackPanel>
@@ -56,15 +54,15 @@
             
             <TabItem Header="Сообщить о неисправности">
                 <Grid Style="{StaticResource BodyColor}">
-                    <StackPanel>
+                    <StackPanel x:Name="ProblemStack">
                         <Border Width="600" Height="200" VerticalAlignment="Top" Margin="0,30,0,30">
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Опишите возникшую проблему" Background="#FFAFBCE6" HorizontalContentAlignment="Center"/>
                                 <Line X1="0" X2="600" Stroke="Black"/>
-                                <TextBox Height="200" Background="White"/>
+                                <TextBox Height="200" Background="White" Text="{Binding Description}"/>
                             </StackPanel>
                         </Border>
-                        <Button Content="Отправить" Width="300" Height="40" HorizontalAlignment="Right" Margin="0,0,95,0"/>
+                        <Button x:Name="SendButton" Content="Отправить" Width="300" Height="40" HorizontalAlignment="Right" Margin="0,0,95,0" Command="{Binding AddProblemCommand}"/>
                     </StackPanel>
                     
                 </Grid>
@@ -74,16 +72,16 @@
                     <Grid x:Name="UserGrid" Margin="59,42,52,45" Background="White">
                         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="1" Margin="0,39,0,0" VerticalAlignment="Top" Width="683"/>
                         <Label Content="Пользователь №" HorizontalAlignment="Center" Margin="0,5,0,0" VerticalAlignment="Top" Width="156" HorizontalContentAlignment="Center"/>
-                        <Label Content="{Binding User.Id}" HorizontalAlignment="Left" Margin="388,5,0,0" VerticalAlignment="Top" Height="24" Width="32"/>
-                        <TextBox Text="{Binding User.Lastname}" HorizontalAlignment="Left" Margin="92,93,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="150" IsReadOnly="True" />
+                        <Label Content="{Binding CurrentUser.Id}" HorizontalAlignment="Left" Margin="388,5,0,0" VerticalAlignment="Top" Height="24" Width="32"/>
+                        <TextBox Text="{Binding CurrentUser.Lastname}" HorizontalAlignment="Left" Margin="92,93,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="150" IsReadOnly="True" />
                         <Label Content="Фамилия" HorizontalAlignment="Left" Margin="27,89,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Firstname}" HorizontalAlignment="Left" Margin="65,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Firstname}" HorizontalAlignment="Left" Margin="65,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
                         <Label Content="Имя" HorizontalAlignment="Left" Margin="27,120,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Patronymic}" HorizontalAlignment="Left" Margin="93,155,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Patronymic}" HorizontalAlignment="Left" Margin="93,155,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
                         <Label Content="Отчество" HorizontalAlignment="Left" Margin="27,151,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Phone}" HorizontalAlignment="Left" Margin="93,186,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Phone}" HorizontalAlignment="Left" Margin="93,186,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
                         <Label Content="Телефон" HorizontalAlignment="Left" Margin="27,182,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Role}" HorizontalAlignment="Left" Margin="65,217,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Role}" HorizontalAlignment="Left" Margin="65,217,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
                         <Label Content="Роль" HorizontalAlignment="Left" Margin="27,213,0,0" VerticalAlignment="Top"/>
                     </Grid>
                 </Grid>

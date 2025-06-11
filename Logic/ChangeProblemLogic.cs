@@ -1,12 +1,7 @@
 ﻿using DatabaseLayer;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic
@@ -21,21 +16,25 @@ namespace Logic
             get { return problem; }
             set { problem = value; OnPropertyChanged(nameof(Problem)); }
         }
-        public ICommand UpdateProblemCommand { get; set; }
-        public ICommand DeleteProblemCommand { get; set; }
+
         public ChangeProblemLogic(IRepository<Problem> problemsRepository)
         {
             this.problemsRepository = problemsRepository;
-            UpdateProblemCommand = new RelayCommand(changeProblem);
-            DeleteProblemCommand = new RelayCommand(deleteProblem);
         }
 
-        private void changeProblem(object param)
+        public ChangeProblemLogic()
+        {
+            this.problemsRepository = new ProblemsRepository();
+        }
+
+
+        public void changeProblem(Problem problem)
         {
             problemsRepository.Update(problem);
         }
 
-        private void deleteProblem(object param)
+
+        public void deleteProblem(Problem problem)
         {
             problemsRepository.Delete(problem);
         }

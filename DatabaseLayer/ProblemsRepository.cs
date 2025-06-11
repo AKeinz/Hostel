@@ -1,9 +1,5 @@
-﻿using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Model;
 
 namespace DatabaseLayer
 {
@@ -14,6 +10,8 @@ namespace DatabaseLayer
             using (var db = new HostelDBContext())
             {
                 db.Problems.Add(entity);
+                db.SaveChanges();
+                db.Entry(entity).State = EntityState.Modified;
             }
         }
 
@@ -22,6 +20,7 @@ namespace DatabaseLayer
             using (var db = new HostelDBContext())
             {
                 db.Problems.Remove(entity);
+                db.SaveChanges();
             }
         }
 
@@ -30,7 +29,7 @@ namespace DatabaseLayer
             List<Problem> result = new List<Problem>();
             using (var db = new HostelDBContext())
             {
-                result = db.Problems.ToList();
+                result = db.Problems.OrderByDescending((p) => p.Id).ToList();
             }
             return result;
         }
@@ -47,7 +46,7 @@ namespace DatabaseLayer
         {
             using (var db = new HostelDBContext())
             {
-                var order = db.Orders.Find(entity.Id);
+                var order = db.Problems.Find(entity.Id);
                 db.Entry(order).CurrentValues.SetValues(entity);
                 db.SaveChanges();
             }

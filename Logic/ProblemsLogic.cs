@@ -1,12 +1,7 @@
 ﻿using DatabaseLayer;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic
@@ -15,6 +10,7 @@ namespace Logic
     {
         public readonly IRepository<Problem> problemsRepository;
         public readonly IRepository<Room> roomsRepository;
+        public IRepository<User> usersRepository = new UsersRepository();
 
         private List<Problem> problems;
         public List<Problem> Problems
@@ -42,35 +38,41 @@ namespace Logic
             get { return room; }
             set { room = value; OnPropertyChanged(nameof(Room)); }
         }
-        public ICommand AddProblemCommand { get; set; }
-        public ICommand ChangeProblemCommand { get; set; }
 
         public ProblemsLogic(IRepository<Problem> problemsRepository, IRepository<Room> roomsRepository)
         {
             this.problemsRepository = problemsRepository;
             this.roomsRepository = roomsRepository;
-            Room_numbers = getRoomNumbers();
-            Problems = getProblems();
-            AddProblemCommand = new RelayCommand(addProblem);
-            ChangeProblemCommand = new RelayCommand(displayChangeProblem);
+            Room_numbers = GetRoomNumbers();
+            Problems = GetProblems();
         }
 
         public ProblemsLogic()
         {
             this.problemsRepository = new ProblemsRepository();
             this.roomsRepository = new RoomsRepository();
-            Room_numbers = getRoomNumbers();
-            Problems = getProblems();
-            AddProblemCommand = new RelayCommand(addProblem);
-            ChangeProblemCommand = new RelayCommand(displayChangeProblem);
+            GetRoomNumbers();
+            GetProblems();
         }
 
-        private List<Problem> getProblems()
+        public List<Problem> GetProblems()
         {
-            return problemsRepository.GetAll().ToList();
+            Problems = problemsRepository.GetAll().ToList();
+            return Problems;
+        }
+        public (List<Problem> probs, List<string> us) GetProblemsWithUsers()
+        {
+            List<string> users = new List<string>();
+            Problems = problemsRepository.GetAll().ToList();
+            foreach (Problem problem in Problems)
+            {
+                User u = usersRepository.GetById(problem.User);
+                users.Add($"({u.Id}) {u.Lastname} {u.Firstname} {u.Patronymic}");
+            }
+            return (Problems, users);
         }
 
-        private List<int> getRoomNumbers()
+        public List<int> GetRoomNumbers()
         {
             List<int> room_numbers = new List<int>();
             List<Room> rooms = roomsRepository.GetAll().ToList();
@@ -78,23 +80,11 @@ namespace Logic
             {
                 room_numbers.Add(room.Room_number);
             }
+            Room_numbers = room_numbers;
             return room_numbers;
         }
 
-        private void addProblem(object param)
-        {
-            problemsRepository.Add(new Problem()
-            {
-                Room = Room,
-                Description = Description,
-                User = User_id,
-                Status = ProblemStatuses.OnQuery,
-            });
-        }
-        private void displayChangeProblem(object param)
-        {
 
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

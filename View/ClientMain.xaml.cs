@@ -1,18 +1,5 @@
-﻿using DatabaseLayer;
-using Logic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using ViewModel;
 
 namespace View
 {
@@ -23,15 +10,29 @@ namespace View
     {
         public ClientMain(int id)
         {
-            //roomsDataGrid.DataContext = new RoomsLogic(new RoomsRepository());
             InitializeComponent();
-            CurrentUser currentUser = new CurrentUser(id);
-            UserGrid.DataContext = currentUser;
+            ClientViewModel clientViewModel = new ClientViewModel() { CurrentUser = CurrentUser.GetUser(id) };
+            clientViewModel.NotifyError += ShowMessage;
+            clientViewModel.NotifyDisplaySelectRoom += DisplaySelectedRoom;
+            DataContext = clientViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+
+
+        private void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+
+        private void DisplaySelectedRoom(object user)
+        {
+            SelectedRoom selectedRoom = new SelectedRoom(user);
+            selectedRoom.Show();
+        }
+
     }
 }

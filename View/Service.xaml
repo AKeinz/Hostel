@@ -4,34 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
+         xmlns:ViewModel="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:Logic="clr-namespace:Logic;assembly=Logic"
         
         mc:Ignorable="d"
         Title="Окно сотрудников гостиницы" Height="450" Width="800" MinWidth="800" MinHeight="450">
+
     <Grid Style="{StaticResource TabColor}">
         <TabControl BorderThickness="0,0,0,0">
 
             <TabItem Header="Главная">
                 <Grid>
                     <Grid Style="{StaticResource SearchColor}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="11*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Label Content="Поиск комнаты" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-                            <TextBox HorizontalAlignment="Left" Margin="117,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="482" Grid.Row="1"/>
-                            <Button Content="Найти" HorizontalAlignment="Left" Margin="646,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="93" Style="{StaticResource SearchButtonColor}"/>
-                        </Grid>
-                        <Grid Grid.Row="1" Style="{StaticResource BodyColor}">
+                        
+                        <Grid  Style="{StaticResource BodyColor}">
                             <ScrollViewer>
                                 <StackPanel>
 
                                     <ItemsControl x:Name="roomsGrid" ItemsSource="{Binding Rooms}" HorizontalAlignment="Center" Padding="0,20,0,0">
 
-                                        <ItemsControl.DataContext>
-                                            <Logic:RoomsLogic></Logic:RoomsLogic>
-                                        </ItemsControl.DataContext>
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal" />
@@ -41,7 +32,15 @@
                                             <DataTemplate>
                                                 <StackPanel Orientation="Vertical" Margin="5">
                                                     <Border BorderBrush="Black" BorderThickness="1" Background="White" Margin="5" Width="230" Height="200">
-                                                        <Image Source="{Binding Photo}"/>
+                                                        <Button Command="{Binding DataContext.DisplaySelectRoomCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+CommandParameter="{Binding}" >
+                                                            <Image>
+                                                                <Image.Source>
+                                                                    <BitmapImage UriSource="{Binding Photo}" CacheOption="OnDemand"/>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </Button>
+
                                                     </Border>
                                                     <TextBlock Text="{Binding Room_number, StringFormat='Комната №{0}'}" Margin="0,0,0,2" HorizontalAlignment="Center"/>
                                                 </StackPanel>
@@ -58,46 +57,50 @@
 
 
             <TabItem Header="Неисправности">
-                <Grid>
-                    <Grid Style="{StaticResource SearchColor}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="11*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Label Content="Поиск неисправности" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Center"/>
-                            <TextBox HorizontalAlignment="Left" Margin="165,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="434"/>
-                            <Button Content="Найти" HorizontalAlignment="Left" Margin="646,0,0,0" Grid.Row="1" VerticalAlignment="Center" Width="93" Style="{StaticResource SearchButtonColor}"/>
-                        </Grid>
-                        <Grid Grid.Row="1" Style="{StaticResource BodyColor}">
-                            <ScrollViewer>
-                                <StackPanel>
-                                    <Button Content="Добавить неисправность" Width="220" Height="35" Margin="0,20,30,0" HorizontalAlignment="Right"/>
 
-                                    <ItemsControl x:Name="problemsGrid" ItemsSource="{Binding Problems}" HorizontalAlignment="Center" Padding="0,0,0,0" Height="220">
+                <Grid Style="{StaticResource SearchColor}">
+                    
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Style="{StaticResource BodyColor}" ClipToBounds="True"  Grid.Column="0">
+                            <ScrollViewer Margin="0,0,0,0">
+                                <StackPanel Margin="20,20,20,0">
 
-                                        <ItemsControl.DataContext>
-                                            <Logic:ProblemsLogic/>
-                                        </ItemsControl.DataContext>
+                                    <ItemsControl x:Name="problemsGrid" ItemsSource="{Binding Problems}" HorizontalAlignment="Center" Padding="0,0,0,0">
+
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal" />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
+
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel Height="224" Width="694">
-                                                    <TextBlock Text="{Binding Id, StringFormat='Неисправность №{0}'}" Margin="0,0,0,2"/>
-                                                    <TextBlock Text="{Binding Room, StringFormat='Комната: {0}'}" Margin="0,0,0,8" VerticalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding User, StringFormat='Отправитель: {0}'}" Margin="0,0,0,8"/>
-                                                    <TextBlock Background="White" Text="{Binding Description}" Margin="0,0,0,8" Height="100"/>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                                        <TextBlock Text="{Binding Status, StringFormat='Текущий статус: {0}'}" Margin="0,0,0,8" HorizontalAlignment="Left"/>
-                                                        <Grid Width="300"></Grid>
-                                                        <Button Content="Изменить" Height="25" Width="250" />
+                                                <StackPanel Height="250" Width="471" Orientation="Vertical" Margin="5" HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding Id, StringFormat='Неисправность №{0}'}" Margin="11,0,0,2"/>
+                                                    <TextBlock Text="{Binding Room, StringFormat='Комната: {0}'}" Margin="11,0,0,8" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding User, StringFormat='Отправитель: {0}'}" Margin="11,0,0,8"/>
+                                                    <Border BorderBrush="Black" BorderThickness="1">
+                                                        <TextBlock Background="White" Text="{Binding Description}" Margin="10" Height="100"/>
+                                                    </Border>
+                                                    <StackPanel Orientation="Horizontal" Margin="11,0,0,0">
+                                                        <Label Content="Текущий статус: " Margin="0,0,0,8" HorizontalAlignment="Left"/>
+                                                        <ComboBox Name="StatusComboBox" ItemsSource="{Binding DataContext.Statuses, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+    SelectedItem="{Binding Status}" VerticalContentAlignment="Center" 
+    Width="100" IsHitTestVisible="{Binding DataContext.IsEnabledStatusesCombobox, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                  Focusable="{Binding DataContext.IsEnabledStatusesCombobox, RelativeSource={RelativeSource AncestorType=ItemsControl}}" StaysOpenOnEdit="True"
+                  >
+
+                                                        </ComboBox>
+                                                        <Grid Width="80"></Grid>
+                                                        <Button Content="{Binding DataContext.ChangeButtonContent, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Height="25" Width="150" 
+                Command="{Binding DataContext.ChangeStatusCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                CommandParameter="{Binding Id}"/>
                                                     </StackPanel>
                                                     <Grid Height="10"></Grid>
-                                                    <Line X1="10" X2="680" Stroke="#FF4C5A62" Margin="0,0,0,50" StrokeThickness="1"></Line>
                                                 </StackPanel>
 
                                             </DataTemplate>
@@ -107,8 +110,21 @@
                             </ScrollViewer>
                         </Grid>
 
+                        <Grid x:Name="ProblemGrid" Style="{StaticResource TabColor}" Grid.Column="1" ClipToBounds="True"  >
+                            <Label Content="Опишите неисправность" HorizontalAlignment="Center"  VerticalAlignment="Top"/>
+                            <ComboBox SelectedItem="{Binding Room_number}" ItemsSource="{Binding Room_numbers}" HorizontalAlignment="Left" Margin="70,62,0,0"  VerticalAlignment="Top" Width="190"/>
+                            <Label Content="Комната" HorizontalAlignment="Left" Margin="2,58,0,0" VerticalAlignment="Top"/>
+                            <TextBox Text="{Binding Description}" HorizontalAlignment="Center" Margin="0,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" MinWidth="250" MinHeight="122"/>
+                            <Label Content="Описание" HorizontalAlignment="Left" Margin="2,89,0,0" VerticalAlignment="Top"/>
+
+
+                            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="1" Margin="0,33,0,0" VerticalAlignment="Top" Width="268"/>
+                            <Button Command="{Binding AddProblemCommand}" Content="Отправить" HorizontalAlignment="Center" Margin="0,283,0,0" VerticalAlignment="Top" MinHeight="33" MinWidth="154"/>
+                        </Grid>
                     </Grid>
+
                 </Grid>
+
             </TabItem>
 
 
@@ -117,16 +133,16 @@
                     <Grid x:Name="UserGrid" Margin="59,42,52,45" Background="White">
                         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="1" Margin="0,39,0,0" VerticalAlignment="Top" Width="683"/>
                         <Label Content="Пользователь №" HorizontalAlignment="Center" Margin="0,5,0,0" VerticalAlignment="Top" Width="156" HorizontalContentAlignment="Center"/>
-                        <Label Content="{Binding User.Id}" HorizontalAlignment="Left" Margin="388,5,0,0" VerticalAlignment="Top" Height="24" Width="32"/>
-                        <TextBox Text="{Binding User.Lastname}" HorizontalAlignment="Left" Margin="92,93,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="150" IsReadOnly="True" />
+                        <Label Content="{Binding CurrentUser.Id}" HorizontalAlignment="Left" Margin="388,5,0,0" VerticalAlignment="Top" Height="24" Width="32"/>
+                        <TextBox Text="{Binding CurrentUser.Lastname}" HorizontalAlignment="Left" Margin="92,93,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="150" IsReadOnly="True" />
                         <Label Content="Фамилия" HorizontalAlignment="Left" Margin="27,89,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Firstname}" HorizontalAlignment="Left" Margin="65,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Firstname}" HorizontalAlignment="Left" Margin="65,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
                         <Label Content="Имя" HorizontalAlignment="Left" Margin="27,120,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Patronymic}" HorizontalAlignment="Left" Margin="93,155,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Patronymic}" HorizontalAlignment="Left" Margin="93,155,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
                         <Label Content="Отчество" HorizontalAlignment="Left" Margin="27,151,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Phone}" HorizontalAlignment="Left" Margin="93,186,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Phone}" HorizontalAlignment="Left" Margin="93,186,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="149" IsReadOnly="True"/>
                         <Label Content="Телефон" HorizontalAlignment="Left" Margin="27,182,0,0" VerticalAlignment="Top"/>
-                        <TextBox Text="{Binding User.Role}" HorizontalAlignment="Left" Margin="65,217,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
+                        <TextBox Text="{Binding CurrentUser.Role}" HorizontalAlignment="Left" Margin="65,217,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="177" IsReadOnly="True"/>
                         <Label Content="Роль" HorizontalAlignment="Left" Margin="27,213,0,0" VerticalAlignment="Top"/>
                     </Grid>
                 </Grid>

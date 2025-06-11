@@ -579,19 +579,10 @@
       "Logic/1.0.0": {
         "dependencies": {
           "DatabaseLayer": "1.0.0",
-          "MessageController": "1.0.0",
           "Model": "1.0.0"
         },
         "runtime": {
           "Logic.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "MessageController/1.0.0": {
-        "runtime": {
-          "MessageController.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -830,11 +821,6 @@
       "sha512": ""
     },
     "Logic/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "MessageController/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

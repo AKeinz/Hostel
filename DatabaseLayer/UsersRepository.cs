@@ -1,10 +1,4 @@
 ﻿using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatabaseLayer
 {
@@ -33,9 +27,9 @@ namespace DatabaseLayer
             List<User> list;
             using (var db = new HostelDBContext())
             {
-                list =  db.Users.ToList();
+                list = db.Users.OrderBy(u => u.Id).ToList();
             }
-            return list;    
+            return list;
         }
 
         public User? GetById(int id)
@@ -56,7 +50,8 @@ namespace DatabaseLayer
             }
         }
 
-        public bool IsUserExist(string phone, Roles role, string login, string password) {
+        public bool IsUserExist(string phone, Roles role, string login, string password)
+        {
 
 
             List<User> users = new List<User>();
@@ -76,7 +71,7 @@ namespace DatabaseLayer
             using (var db = new HostelDBContext())
             {
                 users = db.Users.Where(u => u.Login.Equals(login) && u.Password.Equals(password)).ToList();
-                if (users.Count>0)
+                if (users.Count > 0)
                 {
                     return users[0];
                 }

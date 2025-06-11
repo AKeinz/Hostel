@@ -751,7 +751,6 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "DatabaseLayer": "1.0.0",
-          "MessageController": "1.0.0",
           "Model": "1.0.0"
         },
         "compile": {
@@ -759,16 +758,6 @@
         },
         "runtime": {
           "bin/placeholder/Logic.dll": {}
-        }
-      },
-      "MessageController/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "compile": {
-          "bin/placeholder/MessageController.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/MessageController.dll": {}
         }
       },
       "Model/1.0.0": {
@@ -1901,11 +1890,6 @@
       "type": "project",
       "path": "../Logic/Logic.csproj",
       "msbuildProject": "../Logic/Logic.csproj"
-    },
-    "MessageController/1.0.0": {
-      "type": "project",
-      "path": "../MessageController/MessageController.csproj",
-      "msbuildProject": "../MessageController/MessageController.csproj"
     },
     "Model/1.0.0": {
       "type": "project",

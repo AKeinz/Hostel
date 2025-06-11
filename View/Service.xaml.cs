@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
+using ViewModel;
 
 namespace View
 {
@@ -19,14 +10,34 @@ namespace View
     /// </summary>
     public partial class Service : Window
     {
-        public Service()
+        public Service(int id)
         {
             InitializeComponent();
+            ServiceViewModel serviceViewModel = new ServiceViewModel() { CurrentUser = CurrentUser.GetUser(id) };
+            DataContext = serviceViewModel;
+            serviceViewModel.NotifyError += ShowMessage;
+            serviceViewModel.NotifyDisplaySelectRoom += DisplaySelectedRoom;
+            DataContext = serviceViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+
+        private void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+            ServiceViewModel serviceViewModel = (ServiceViewModel)problemsGrid.DataContext;
+            serviceViewModel.Update();
+        }
+
+        private void DisplaySelectedRoom(object user)
+        {
+            SelectedRoom selectedRoom = new SelectedRoom(user);
+            selectedRoom.Show();
+        }
+
+
     }
 }

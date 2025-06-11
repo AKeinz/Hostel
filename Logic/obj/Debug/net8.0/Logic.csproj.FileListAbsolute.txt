@@ -2,10 +2,8 @@ C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\Logic.d
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\Logic.dll
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\Logic.pdb
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\DatabaseLayer.dll
-C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\MessageController.dll
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\Model.dll
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\DatabaseLayer.pdb
-C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\MessageController.pdb
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\bin\Debug\net8.0\Model.pdb
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.csproj.AssemblyReference.cache
 C:\Users\user\Desktop\Проектиров\Hostel\Logic\obj\Debug\net8.0\Logic.GeneratedMSBuildEditorConfig.editorconfig

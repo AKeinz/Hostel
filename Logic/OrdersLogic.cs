@@ -1,17 +1,12 @@
 ﻿using DatabaseLayer;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic
 {
-    public class OrdersLogic : INotifyPropertyChanged
+    public class OrdersLogic : BaseLogic, INotifyPropertyChanged
     {
         public readonly IOrdersRepository ordersRepository;
 
@@ -21,42 +16,29 @@ namespace Logic
             get { return orders; }
             set { orders = value; OnPropertyChanged(nameof(Orders)); }
         }
-        public ICommand AddOrderCommand { get; set; }
-        public ICommand ChangeOrderCommand { get; set; }
 
         public OrdersLogic(IOrdersRepository rep)
         {
             this.ordersRepository = rep;
-            Orders = getOrders();
-            AddOrderCommand = new RelayCommand(displayAddOrder);
-            ChangeOrderCommand = new RelayCommand(displayChangeOrder);
+            Orders = GetOrders();
         }
 
         public OrdersLogic()
         {
             this.ordersRepository = new OrdersRepository();
-            Orders = getOrders();
-            AddOrderCommand = new RelayCommand(displayAddOrder);
-            ChangeOrderCommand = new RelayCommand(displayChangeOrder);
+            Orders = GetOrders();
         }
 
-        private List<Order> getOrders()
+        public List<Order> GetOrders()
         {
-            return ordersRepository.GetAll().ToList();
+            Orders = ordersRepository.GetAll().ToList();
+            return Orders;
         }
-        private void displayAddOrder(object param)
-        {
-
-        }
-        private void displayChangeOrder(object param)
-        {
-
-        }
-
-
 
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event BaseLogic.ErrorsHandler? NotifyError;
+
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)

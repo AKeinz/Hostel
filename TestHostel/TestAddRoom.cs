@@ -2,11 +2,6 @@
 using Logic;
 using Model;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestHostel
 {
@@ -18,23 +13,27 @@ namespace TestHostel
         {
             int number = 1;
             string photopath = AppDomain.CurrentDomain.BaseDirectory + "\\PhotosForTest\\Кот.jpg";
+            string endphotopath = AppDomain.CurrentDomain.BaseDirectory + "RoomPhotos\\1\\1.jpg";
             int capacity = 3;
 
-            var mockRoomsRepository = new Mock<IRepository<Room>>();
+            var mockRoomsRepository = new Mock<IRoomsRepository>();
 
             var addRoomLogic = new AddRoomLogic(mockRoomsRepository.Object)
             {
-                Photo = photopath,
-                Room_number = number,
-                Capacity = capacity
+                New_room = new Room()
+                {
+                    Photo = photopath,
+                    Room_number = number,
+                    Capacity = capacity
+                }
             };
 
-            addRoomLogic.AddRoomCommand.Execute(null);
+            addRoomLogic.AddRoom(addRoomLogic.New_room);
 
 
             mockRoomsRepository.Verify(r => r.Add(It.Is<Room>(p =>
                 p.Room_number == number &&
-                p.Photo == photopath &&
+                p.Photo == endphotopath &&
                 p.Capacity == capacity
             )), Times.Once);
 
@@ -47,18 +46,20 @@ namespace TestHostel
             string photopath = "C:\\Users\\";
             int capacity = 3;
 
-            var mockRoomsRepository = new Mock<IRepository<Room>>();
+            var mockRoomsRepository = new Mock<IRoomsRepository>();
 
             var addRoomLogic = new AddRoomLogic(mockRoomsRepository.Object)
             {
-                Photo = photopath,
-                Room_number = number,
-                Capacity = capacity
+                New_room = new Room()
+                {
+                    Photo = photopath,
+                    Room_number = number,
+                    Capacity = capacity
+                }
             };
 
-            addRoomLogic.AddRoomCommand.Execute(null);
-
-
+            Assert.ThrowsException<HostelException>(() => addRoomLogic.AddRoom(addRoomLogic.New_room),
+                "HostelException должен быть сгенерирован, если пользователь существует");
             mockRoomsRepository.Verify(r => r.Add(It.Is<Room>(p =>
                 p.Room_number == number &&
                 p.Photo == photopath &&

@@ -1,128 +1,94 @@
 ﻿using DatabaseLayer;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic
 {
-    public class AddRoomLogic : INotifyPropertyChanged
+    public class AddRoomLogic : BaseLogic, INotifyPropertyChanged
     {
-        public readonly IRepository<Room> roomsRepository;
+        public readonly IRoomsRepository roomsRepository;
 
         private Room new_room;
-        private int room_number;
-        private int capacity;
-        private double cost_per_day;
-        private string description;
-        private RoomStatuses status;
-        private string photo;
 
         public Room New_room
         {
             get { return new_room; }
             set { new_room = value; OnPropertyChanged(nameof(New_room)); }
         }
-        public int Room_number
-        {
-            get { return room_number; }
-            set { room_number = value; OnPropertyChanged(nameof(Room_number)); }
-        }
-        public int Capacity
-        {
-            get { return capacity; }
-            set { capacity = value; OnPropertyChanged(nameof(Capacity)); }
-        }
-        public double Cost_per_day
-        {
-            get { return cost_per_day; }
-            set { cost_per_day = value; OnPropertyChanged(nameof(Cost_per_day)); }
-        }
-        public string Description
-        {
-            get { return description; }
-            set { description = value; OnPropertyChanged(nameof(Description)); }
-        }
-        public RoomStatuses Status
-        {
-            get { return status; }
-            set { status = value; OnPropertyChanged(nameof(Status)); }
-        }
-        public string Photo
-        {
-            get { return photo; }
-            set { photo = value; OnPropertyChanged(nameof(Photo)); }
-        }
-        public ICommand AddRoomCommand { get; set; }
-        public ICommand OpenFileSystemCommand { get; set; }
+       
 
-        public AddRoomLogic(IRepository<Room> repository)
+        public AddRoomLogic(IRoomsRepository repository)
         {
             roomsRepository = repository;
-            AddRoomCommand = new RelayCommand(addRoom);
-            OpenFileSystemCommand = new RelayCommand(openFileSystem);
         }
-
-
-        private void openFileSystem(object param)
+        public AddRoomLogic()
         {
-            //в щкне
+            roomsRepository = new RoomsRepository();
         }
+
 
         private bool copyPhoto()
         {
             try
             {
-                FileInfo photoPath = new FileInfo(Photo);
-                if (!photoPath.Exists)
-                {
+                string sourcePath = New_room.Photo;
+                if (string.IsNullOrEmpty(sourcePath))
                     return false;
-                }
-                string destinationDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "RoomPhotos", Room_number.ToString());
-                DirectoryInfo newRoomPhotos = new DirectoryInfo(destinationDirectory);
-                if (!newRoomPhotos.Exists)
+
+                if (!File.Exists(sourcePath))
+                    return false;
+                string destinationDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "RoomPhotos", New_room.Room_number.ToString());
+                Directory.CreateDirectory(destinationDir);
+
+                string destinationPath = Path.Combine(destinationDir, $"{New_room.Room_number}{Path.GetExtension(sourcePath)}");
+
+                using (var sourceStream = File.Open(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    newRoomPhotos.Create();
+                    using (var destinationStream = File.Create(destinationPath))
+                    {
+                        sourceStream.CopyTo(destinationStream);
+                    }
                 }
-                string destinationPath = Path.Combine(newRoomPhotos.FullName, Room_number.ToString() + photoPath.Extension);
-                photoPath.CopyTo(destinationPath, true);
-                Photo = destinationPath;
+
+                New_room.Photo = destinationPath; 
                 return true;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Ошибка при копировании: {ex.Message}");
                 return false;
             }
         }
 
-        private void addRoom(object param)
+        public void AddRoom(Room param)
         {
+
+            New_room = param;
+            try
+            {
+                New_room.Room_number = roomsRepository.GetMaxId() + 1;
+            }
+            catch
+            {
+                New_room.Room_number = 0;
+            }
             if (copyPhoto())
             {
-                roomsRepository.Add(new Room()
-                {
-                    Room_number = Room_number,
-                    Capacity = Capacity,
-                    Cost_per_day = Cost_per_day,
-                    Description = Description,
-                    Status = Status,
-                    Photo = photo,
-                });
+                roomsRepository.Add(New_room);
             }
+            else
+            {
+                throw new HostelException("Фото не найдено");
+            }
+
         }
 
-        private void displayRooms()
-        {
-
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event BaseLogic.ErrorsHandler? NotifyError;
+
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)

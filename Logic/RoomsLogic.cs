@@ -1,13 +1,7 @@
 ﻿using DatabaseLayer;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic
@@ -22,37 +16,33 @@ namespace Logic
             get { return rooms; }
             set { rooms = value; OnPropertyChanged(nameof(Rooms)); }
         }
-        public ICommand AddRoomCommand { get; set; }
-        public ICommand SelectRoomCommand { get; set; }
 
         public RoomsLogic(IRepository<Room> rep)
         {
             roomsRepository = rep;
-            Rooms = getRooms();
-            AddRoomCommand = new RelayCommand(displayAddRoom);
-            SelectRoomCommand = new RelayCommand(displaySelectedRoom);
+            Rooms = GetRooms();
         }
 
         public RoomsLogic()
         {
             roomsRepository = new RoomsRepository();
-            Rooms = getRooms();
-            AddRoomCommand = new RelayCommand(displayAddRoom);
-            SelectRoomCommand = new RelayCommand(displaySelectedRoom);
+            Rooms = GetRooms();
         }
 
-        private List<Room> getRooms()
-        { 
-            List<Room> list = roomsRepository.GetAll().ToList();
-            return list;
-        }
-        private void displayAddRoom(object param)
+        public List<int> GetRoomIds()
         {
-            Notify?.Invoke();
+            List<int> ids = new List<int>();
+            foreach (Room room in Rooms)
+            {
+                ids.Add(room.Room_number);
+            }
+            return ids;
         }
-        private void displaySelectedRoom(object param)
-        {
 
+        public List<Room> GetRooms()
+        {
+            Rooms = roomsRepository.GetAll().ToList();
+            return Rooms;
         }
 
 

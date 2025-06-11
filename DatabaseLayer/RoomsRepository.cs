@@ -1,13 +1,8 @@
 ﻿using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatabaseLayer
 {
-    public class RoomsRepository : IRepository<Room>
+    public class RoomsRepository : IRoomsRepository
     {
         public void Add(Room entity)
         {
@@ -32,7 +27,7 @@ namespace DatabaseLayer
             List<Room> list;
             using (var db = new HostelDBContext())
             {
-                list =  db.Rooms.ToList();
+                list = db.Rooms.OrderBy(r => r.Room_number).ToList();
             }
             return list;
         }
@@ -49,9 +44,17 @@ namespace DatabaseLayer
         {
             using (var db = new HostelDBContext())
             {
-                var user = db.Users.Find(entity.Room_number);
+                var user = db.Rooms.Find(entity.Room_number);
                 db.Entry(user).CurrentValues.SetValues(entity);
                 db.SaveChanges();
+            }
+        }
+
+        public int GetMaxId()
+        {
+            using (var db = new HostelDBContext())
+            {
+                return db.Rooms.Max(u => u.Room_number);
             }
         }
     }

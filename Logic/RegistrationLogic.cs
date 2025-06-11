@@ -1,16 +1,8 @@
-﻿using Model;
-using System;
-using System.Collections.Generic;
+﻿using DatabaseLayer;
+using Model;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using MessageController;
-using System.Security.Cryptography;
-using System.Data;
-using DatabaseLayer;
 
 namespace Logic
 {
@@ -18,13 +10,12 @@ namespace Logic
     {
         public readonly IUsersRepository usersRepository;
 
-        private string lastname = " ";
-        private string firstname = " ";
-        private string patronymic = " ";
-        private string phone = " ";
-        private string login = " ";
-        private string password = " ";
-        private string code = "";
+        private string lastname = "";
+        private string firstname = "";
+        private string patronymic = "";
+        private string phone = "";
+        private string login = "";
+        private string password = "";
 
         public string Lastname
         {
@@ -56,36 +47,25 @@ namespace Logic
             get { return password; }
             set { password = value; OnPropertyChanged(nameof(Password)); }
         }
-        /*public string Code
-        {
-            get { return code; }
-            set { code = value; OnPropertyChanged(nameof(Code)); }
-        }*/
-        /*private string sentCode;*/
+
         public ICommand CheckDataCommand { get; set; }
-        public ICommand CheckCodeCommand { get; set; }
         public ICommand closeCommand { get; set; }
-        private IMessageContrroller messageController;
 
         public RegistrationLogic()
         {
             this.usersRepository = new UsersRepository();
-            CheckDataCommand = new RelayCommand(checkData);
-            closeCommand = new RelayCommand(Close);
-            //CheckCodeCommand = new RelayCommand(checkCode);
-            messageController = new MessageController.MessageController();
+            CheckDataCommand = new RelayCommand<object>(checkData);
+            closeCommand = new RelayCommand<object>(Close);
         }
         public RegistrationLogic(IUsersRepository usersRepository)
         {
             this.usersRepository = usersRepository;
-            CheckDataCommand = new RelayCommand(checkData);
-            //CheckCodeCommand = new RelayCommand(checkCode);
-            messageController = new MessageController.MessageController();
+            CheckDataCommand = new RelayCommand<object>(checkData);
         }
 
         private void checkData(object param)
         {
-            if (IsUserExist()) 
+            if (IsUserExist())
             {
                 showMessage("Пользователь уже существует");
                 return;
@@ -93,46 +73,14 @@ namespace Logic
             addUser();
             showMessage("Успешно");
             closeCommand.Execute(this);
-            //sendCode();  //пропуск проверки кода
         }
 
 
-        public bool IsUserExist() 
+        public bool IsUserExist()
         {
             return usersRepository.IsUserExist(Phone, Roles.Client, Login, Password);
         }
-        /*private void sendCode()
-        {
-            sentCode = generateCode();se
-            messageController.SendMessage(Phone, Code);
-            displayShowCode();
-        }*/
-
-        /*public string generateCode()
-        {
-            Random random = new Random();
-            int code = random.Next(1000, 9999);
-            sentCode = code.ToString();
-            return code.ToString();
-        }*/
-
-        /*private void checkCode(object param)
-        {
-            if (!isRightCode())
-            {
-                throw new HostelException("Неверный код");
-            }
-            addUser();
-        }*/
-
-       /* public bool isRightCode()
-        {
-            if (Code.Equals(sentCode))
-            {
-                return true;
-            }
-            return false;
-        }*/
+       
 
         private void addUser()
         {

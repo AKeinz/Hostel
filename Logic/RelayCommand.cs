@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace Logic
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand<T> : ICommand
     {
-        private Action<object> execute;
-        private Func<object, bool> canExecute;
+        private Action<T> execute;
+        private Func<T, bool> canExecute;
 
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
         {
             this.execute = execute;
             this.canExecute = canExecute;
@@ -23,12 +18,12 @@ namespace Logic
 
         public bool CanExecute(object parameter)
         {
-            return this.canExecute == null || this.canExecute(parameter);
+            return this.canExecute == null || this.canExecute((T)parameter);
         }
 
         public void Execute(object parameter)
         {
-            this.execute(parameter);
+            this.execute((T)parameter);
         }
     }
 }

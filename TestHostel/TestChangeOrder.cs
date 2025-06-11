@@ -2,11 +2,6 @@
 using Logic;
 using Model;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestHostel
 {
@@ -20,10 +15,10 @@ namespace TestHostel
 
             var changeOrderLogic = new ChangeOrderLogic(mockOrdersRepository.Object)
             {
-                Order = new Order() { Client = 1, Room = 7},
+                Order = new Order() { Client = 1, Room = 7 },
             };
 
-            changeOrderLogic.UpdateOrderCommand.Execute(null);
+            changeOrderLogic.changeOrder(changeOrderLogic.Order);
 
 
             mockOrdersRepository.Verify(r => r.Update(It.Is<Order>(p =>
@@ -42,7 +37,7 @@ namespace TestHostel
                 Order = new Order() { Client = 1, Room = 7 },
             };
 
-            changeOrderLogic.DeleteOrderCommand.Execute(null);
+            changeOrderLogic.deleteOrder(changeOrderLogic.Order);
 
 
             mockOrdersRepository.Verify(r => r.Delete(It.Is<Order>(p =>

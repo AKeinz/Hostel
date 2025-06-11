@@ -7,6 +7,21 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="AddClient.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddOrder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddProblem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddRoom.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddUser.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Administrator.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -17,6 +32,24 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Registration.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SelectedClient.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SelectedOrder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SelectedProblem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ChangeRoom.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SelectedRoom.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SelectedUser.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Service.xaml.cs">

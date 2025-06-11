@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\user\Desktop\Проектиров\Hostel\View\App.xaml
-6-313238812
+17-963431279
 
-91734739263
-2161470048839
-Administrator.xaml;Authorization.xaml;ClientMain.xaml;Reception.xaml;Registration.xaml;Service.xaml;
+20-424877670
+216-1830084704
+AddClient.xaml;AddOrder.xaml;AddProblem.xaml;AddRoom.xaml;AddUser.xaml;Administrator.xaml;Authorization.xaml;ChangeRoom.xaml;ClientMain.xaml;Reception.xaml;Registration.xaml;SelectedClient.xaml;SelectedOrder.xaml;SelectedProblem.xaml;SelectedRoom.xaml;SelectedUser.xaml;Service.xaml;
 
 False
 

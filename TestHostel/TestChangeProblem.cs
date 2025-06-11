@@ -2,11 +2,6 @@
 using Logic;
 using Model;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestHostel
 {
@@ -22,10 +17,10 @@ namespace TestHostel
 
             var changeProblemLogic = new ChangeProblemLogic(mockProblemsRepository.Object)
             {
-                Problem = new Problem() {Room = room , User = user},
+                Problem = new Problem() { Room = room, User = user },
             };
 
-            changeProblemLogic.UpdateProblemCommand.Execute(null);
+            changeProblemLogic.changeProblem(changeProblemLogic.Problem);
 
 
             mockProblemsRepository.Verify(r => r.Update(It.Is<Problem>(p =>
@@ -46,7 +41,7 @@ namespace TestHostel
                 Problem = new Problem() { Room = room, User = user },
             };
 
-            changeProblemLogic.DeleteProblemCommand.Execute(null);
+            changeProblemLogic.deleteProblem(changeProblemLogic.Problem);
 
 
             mockProblemsRepository.Verify(r => r.Delete(It.Is<Problem>(p =>

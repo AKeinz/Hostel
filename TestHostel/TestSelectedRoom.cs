@@ -2,11 +2,6 @@
 using Logic;
 using Model;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestHostel
 {
@@ -17,7 +12,8 @@ namespace TestHostel
         public void changeRoom_RightPhoto()
         {
             int number = 1;
-            string photopath = AppDomain.CurrentDomain.BaseDirectory + "\\PhotosForTest\\Кот.jpg";
+            string photopath = AppDomain.CurrentDomain.BaseDirectory + "PhotosForTest\\Кот.jpg";
+            string endphotopath = AppDomain.CurrentDomain.BaseDirectory + "RoomPhotos\\1\\1.jpg";
             int capacity = 3;
 
             var mockRoomsRepository = new Mock<IRepository<Room>>();
@@ -32,12 +28,12 @@ namespace TestHostel
                 }
             };
 
-            changeRoomLogic.UpdateRoomCommand.Execute(null);
+            changeRoomLogic.ChangeRoom(changeRoomLogic.Room);
 
-
+            Room room = changeRoomLogic.Room;
             mockRoomsRepository.Verify(r => r.Update(It.Is<Room>(p =>
                 p.Room_number == number &&
-                p.Photo == photopath &&
+                p.Photo == endphotopath &&
                 p.Capacity == capacity
             )), Times.Once);
 
@@ -62,9 +58,8 @@ namespace TestHostel
                 }
             };
 
-            changeRoomLogic.UpdateRoomCommand.Execute(null);
-
-
+            Assert.ThrowsException<HostelException>(() => changeRoomLogic.ChangeRoom(changeRoomLogic.Room),
+                "HostelException должен быть сгенерирован, если пользователь существует");
             mockRoomsRepository.Verify(r => r.Update(It.Is<Room>(p =>
                 p.Room_number == number &&
                 p.Photo == photopath &&
@@ -92,7 +87,7 @@ namespace TestHostel
                 }
             };
 
-            changeRoomLogic.DeleteRoomCommand.Execute(null);
+            changeRoomLogic.DeleteRoom(changeRoomLogic.Room);
 
 
             mockRoomsRepository.Verify(r => r.Delete(It.Is<Room>(p =>

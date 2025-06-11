@@ -1,13 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
 using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DatabaseLayer
 {
@@ -20,6 +12,7 @@ namespace DatabaseLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             optionsBuilder.UseNpgsql(connectionString: "Server=localhost;Port=5432;User Id=postgres;Password=123;Database=Hosteldb");
             base.OnConfiguring(optionsBuilder);
         }
@@ -30,12 +23,22 @@ namespace DatabaseLayer
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<User>().HasData(new User() { 
-            Firstname = "admin",
-            Lastname = "admin",
-            Login = "admin",
-            Password = "admin",
-            Role = Roles.Admin});
+            modelBuilder.Entity<Problem>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Order>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<User>().HasData(new User()
+            {
+                Firstname = "admin",
+                Lastname = "admin",
+                Login = "admin",
+                Password = "admin",
+                Role = Roles.Admin
+            });
 
 
             modelBuilder
@@ -54,21 +57,15 @@ namespace DatabaseLayer
                 .Entity<Problem>()
                 .Property(r => r.Status)
                 .HasConversion<string>();
-            //base.OnModelCreating(modelBuilder);
         }
 
         public HostelDBContext()
-        {  
-            //Database.EnsureDeleted();
-            bool isNew = Database.EnsureCreated();
-            if (isNew)
-            {
-
-            }
+        {
+            Database.EnsureCreated();
         }
 
-        
 
-        
+
+
     }
 }

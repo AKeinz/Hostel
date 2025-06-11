@@ -1,12 +1,7 @@
 ﻿using DatabaseLayer;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic
@@ -14,6 +9,14 @@ namespace Logic
     public class UsersLogic : INotifyPropertyChanged
     {
         public readonly IUsersRepository UsersRepository;
+
+        private User selectedUser;
+        public User SelectedUser
+        {
+            get { return selectedUser; }
+            set { selectedUser = value; OnPropertyChanged(nameof(SelectedUser)); }
+        }
+
 
         private List<User> users = new List<User>() { new User() { Firstname = "hfhfh" } };
         public List<User> Users
@@ -29,36 +32,42 @@ namespace Logic
             set { clients = value; OnPropertyChanged(nameof(Clients)); }
         }
 
-        public ICommand AddUserCommand { get; set; }
-        public ICommand ChangeUserCommand { get; set; }
 
         public UsersLogic(IUsersRepository usersRepository)
         {
             UsersRepository = usersRepository;
-            getUsers();
-            getClients();
-            AddUserCommand = new RelayCommand(displayAddUser);
-            ChangeUserCommand = new RelayCommand(displayChangeUser);
+            GetUsers();
+            GetClients();
         }
 
         public UsersLogic()
         {
             UsersRepository = new UsersRepository();
-            getUsers();
-            getClients();
-            AddUserCommand = new RelayCommand(displayAddUser);
-            ChangeUserCommand = new RelayCommand(displayChangeUser);
+            GetUsers();
+            GetClients();
         }
 
-        private List<User> getUsers()
+        public List<User> GetUsers()
         {
-            return UsersRepository.GetAll().ToList();
+            Users = UsersRepository.GetAll().ToList();
+            return Users;
         }
 
-        private List<User> getClients()
+        public List<int> GetUserIds()
         {
+            List<int> ids = new List<int>();
+            foreach (User user in Users)
+            {
+                ids.Add(user.Id);
+            }
+            return ids;
+        }
+
+        public List<User> GetClients()
+        {
+            GetUsers();
             List<User> clients = new List<User>();
-            foreach(User user in Users)
+            foreach (User user in Users)
             {
                 if (user.Role.Equals(Roles.Client))
                     clients.Add(user);
@@ -67,19 +76,21 @@ namespace Logic
             return clients;
         }
 
-        private void displayAddUser(object param)
+        public List<int> GetClietnIds()
         {
-
+            List<int> ids = new List<int>();
+            foreach (User user in Clients)
+            {
+                ids.Add(user.Id);
+            }
+            return ids;
         }
-        private void displayChangeUser(object param)
-        {
 
-        }// что за shoqMessage
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

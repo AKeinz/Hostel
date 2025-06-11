@@ -1,15 +1,5 @@
-﻿using System.Text;
+﻿using Logic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using DatabaseLayer;
-using Logic;
 
 namespace View
 {
@@ -66,7 +56,7 @@ namespace View
         }
         private void DisplayService(int id)
         {
-            Service reception = new Service();
+            Service reception = new Service(id);
             reception.Closed += this.Showd;
             reception.Show();
             Hide();

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DatabaseLayer\DatabaseLayer.csproj" />
-    <ProjectReference Include="..\MessageController\MessageController.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 

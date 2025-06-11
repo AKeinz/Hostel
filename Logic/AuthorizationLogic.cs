@@ -1,21 +1,14 @@
 ﻿using DatabaseLayer;
 using Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Logic
 {
     public class AuthorizationLogic : INotifyPropertyChanged
     {
-        private int user_id;
-        private string login="";
+        private string login = "";
         public string Login
         {
             get { return login; }
@@ -36,23 +29,23 @@ namespace Logic
             }
         }
 
-        public ICommand GetUserCommand {get; set;}
+        public ICommand GetUserCommand { get; set; }
         public ICommand DisplayMainCommand { get; set; }
-        public ICommand DisplayRegistrationCommand {get; set; }
+        public ICommand DisplayRegistrationCommand { get; set; }
         private IUsersRepository usersRepository = new UsersRepository();
 
         public AuthorizationLogic()
         {
-            GetUserCommand = new RelayCommand(GetUser);
-            DisplayMainCommand = new RelayCommand(DisplayAdmin);
-            DisplayRegistrationCommand = new RelayCommand(DisplayRegistration);
+            GetUserCommand = new RelayCommand<object>(GetUser);
+            DisplayMainCommand = new RelayCommand<object>(DisplayAdmin);
+            DisplayRegistrationCommand = new RelayCommand<object>(DisplayRegistration);
         }
         public AuthorizationLogic(IUsersRepository usersRepository)
         {
             this.usersRepository = usersRepository;
-            GetUserCommand = new RelayCommand(GetUser);
-            DisplayMainCommand = new RelayCommand(DisplayAdmin);
-            DisplayRegistrationCommand = new RelayCommand(DisplayRegistration);
+            GetUserCommand = new RelayCommand<object>(GetUser);
+            DisplayMainCommand = new RelayCommand<object>(DisplayAdmin);
+            DisplayRegistrationCommand = new RelayCommand<object>(DisplayRegistration);
         }
 
         private void GetUser(object param)

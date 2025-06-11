@@ -1,10 +1,4 @@
 ﻿using Logic;
-using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestHostel
 {
@@ -23,7 +17,7 @@ namespace TestHostel
                 Password = "admin"
             };
             Assert.IsTrue(registration.IsUserExist());
-         }
+        }
 
         [TestMethod]
         public void CheckNonExisted()
@@ -31,31 +25,12 @@ namespace TestHostel
             registration = new RegistrationLogic()
             {
                 Login = "admina",
-                Password = "admin"
+                Password = "admin",
+                Phone = "9232938283",
             };
             registration.IsUserExist();
             Assert.IsFalse(registration.IsUserExist());
         }
 
-        [TestMethod]
-        public void CheckRightCode()
-        {
-            registration = new RegistrationLogic();
-            string codeSent = registration.generateCode();
-            registration.Code = codeSent;
-            Assert.IsTrue(registration.isRightCode());
-        }
-
-        [TestMethod]
-        public void CheckWrongCode()
-        {
-            registration = new RegistrationLogic();
-            string codeSent = "djddkfjdkfj";
-            registration.Code = codeSent;
-
-            registration.generateCode();
-
-            Assert.IsFalse(registration.isRightCode());
-        }
     }
 }

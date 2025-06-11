@@ -1,0 +1,29 @@
+﻿<Window x:Class="View.SelectedOrder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:View"
+        mc:Ignorable="d"
+        Title="Выбранная запись" Height="550" Width="400" ResizeMode="NoResize">
+    <Grid Style="{StaticResource BodyColor}">
+        <StackPanel Orientation="Vertical" Margin="20" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Запись №"/>
+                <Label Content="{Binding Order.Id}"/>
+            </StackPanel>
+            <Label Content="Комната (id)"/>
+            <ComboBox SelectedItem="{Binding Order.Room}" ItemsSource="{Binding Rooms}" Margin="10,5,50,10"/>
+            <Label Content="Клиент (id)"/>
+            <ComboBox SelectedItem="{Binding Order.Client}" ItemsSource="{Binding Clients}" Margin="10,5,50,10"/>
+            <Label Content="Кол-во человек"/>
+            <TextBox Text="{Binding Order.Number_of_people}" Margin="10,5,50,10" PreviewTextInput="TextBox_PreviewTextInput"/>
+            <Label Content="Дата заселения"/>
+            <DatePicker SelectedDate="{Binding Order.In_day}" Margin="10,5,50,10"/>
+            <Label Content="Дата выселения"/>
+            <DatePicker SelectedDate="{Binding Order.Out_day}" Margin="10,5,50,10" FirstDayOfWeek="Monday"/>
+            <Button Content="Сохранить изменения" Height="30" Margin="50,20,50,0" Command="{Binding UpdateCommand}"/>
+            <Button Content="Удалить" Height="30" Margin="50,20,50,0" Command="{Binding DeleteCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>
