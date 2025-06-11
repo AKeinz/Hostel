@@ -70,7 +70,7 @@ namespace View {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/View;component/authorization.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/View;V1.0.0.0;component/authorization.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\Authorization.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
