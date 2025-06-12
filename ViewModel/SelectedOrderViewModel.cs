@@ -60,7 +60,7 @@ namespace ViewModel
             }
             catch (Exception ex)
             {
-                NotifyError?.Invoke("Возникла ошибка в процессе обновления данных");
+                NotifyError?.Invoke("не удалось сохранить изменения");
             }
         }
 
@@ -74,7 +74,7 @@ namespace ViewModel
             }
             catch (Exception ex)
             {
-                NotifyError?.Invoke("Возникла ошибка в процессе удаления");
+                NotifyError?.Invoke("не удалось сохранить изменения");
             }
         }
 

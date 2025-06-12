@@ -65,14 +65,21 @@ namespace Logic
 
         private void checkData(object param)
         {
-            if (IsUserExist())
+            try
             {
-                showMessage("Пользователь уже существует");
-                return;
+                if (IsUserExist())
+                {
+                    showMessage("Пользователь уже существует");
+                    return;
+                }
+                addUser();
+                showMessage("Успешно");
+                closeCommand.Execute(this);
             }
-            addUser();
-            showMessage("Успешно");
-            closeCommand.Execute(this);
+            catch 
+            {
+                showMessage("не удалось сохранить изменения");
+            }
         }
 
 

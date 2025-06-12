@@ -9,7 +9,7 @@
     <Grid Style="{StaticResource BodyColor}">
         <Label Content="Заполните поля" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
         <Button Content="Назад" HorizontalAlignment="Left" Margin="67,339,0,0" VerticalAlignment="Top" Height="44" Width="124" Command="{Binding closeCommand}"/>
-        <Button Content="Далее " HorizontalAlignment="Left" Margin="303,339,0,0" VerticalAlignment="Top" Height="44" Width="124" Command="{Binding CheckDataCommand}"/>
+        <Button Content="Зарегистрироваться" HorizontalAlignment="Left" Margin="286,339,0,0" VerticalAlignment="Top" Height="44" Width="150" Command="{Binding CheckDataCommand}"/>
 
         <Label Content="Фамилия" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="108,71,0,0" TextWrapping="Wrap" Text="{Binding Lastname}"  VerticalAlignment="Top" Width="355"/>

@@ -10,12 +10,6 @@ namespace Logic
     {
         public readonly IUsersRepository UsersRepository;
 
-        private User selectedUser;
-        public User SelectedUser
-        {
-            get { return selectedUser; }
-            set { selectedUser = value; OnPropertyChanged(nameof(SelectedUser)); }
-        }
 
 
         private List<User> users = new List<User>() { new User() { Firstname = "hfhfh" } };

@@ -86,7 +86,7 @@ namespace View {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/View;V1.0.0.0;component/clientmain.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/View;component/clientmain.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\ClientMain.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

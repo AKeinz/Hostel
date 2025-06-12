@@ -12,11 +12,15 @@ namespace TestHostel
         public void changeOrder()
         {
             var mockOrdersRepository = new Mock<IOrdersRepository>();
+            var mockRoomsRepository = new Mock<IRoomsRepository>();
 
-            var changeOrderLogic = new ChangeOrderLogic(mockOrdersRepository.Object)
+            var changeOrderLogic = new ChangeOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object)
             {
                 Order = new Order() { Client = 1, Room = 7 },
             };
+            mockRoomsRepository.Setup(r => r.GetById(7)).Returns(
+               new Room() { Room_number = 7, Status = RoomStatuses.Free }
+           );
 
             changeOrderLogic.changeOrder(changeOrderLogic.Order);
 
@@ -31,8 +35,9 @@ namespace TestHostel
         public void deleteOrder()
         {
             var mockOrdersRepository = new Mock<IOrdersRepository>();
+            var mockRoomsRepository = new Mock<IRoomsRepository>();
 
-            var changeOrderLogic = new ChangeOrderLogic(mockOrdersRepository.Object)
+            var changeOrderLogic = new ChangeOrderLogic(mockOrdersRepository.Object, mockRoomsRepository.Object)
             {
                 Order = new Order() { Client = 1, Room = 7 },
             };

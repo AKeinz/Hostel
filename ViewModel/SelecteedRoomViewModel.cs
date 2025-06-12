@@ -44,9 +44,9 @@ namespace ViewModel
                 NotifyError?.Invoke("Успешно!");
                 NotifyDisplay?.Invoke();
             }
-            catch (Exception ex)
+            catch
             {
-                NotifyError?.Invoke($"Возникла ошибка в процессе обновления данных ({ex.Message})");
+                NotifyError?.Invoke("не удалось сохранить изменения");
             }
         }
 

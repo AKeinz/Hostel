@@ -12,7 +12,6 @@ namespace Logic
         public readonly IRepository<Room> roomsRepository;
 
         private List<int> room_numbers = new List<int>();
-        private int total_cost;
         private Order order;
         public Order Order
         {
@@ -24,11 +23,7 @@ namespace Logic
             get { return room_numbers; }
             set { room_numbers = value; OnPropertyChanged("Room_numbers"); }
         }
-        public int Total_cost
-        {
-            get { return total_cost; }
-            set { total_cost = value; OnPropertyChanged("Total_cost"); }
-        }
+
 
         public AddOrderLogic(IOrdersRepository rep, IRepository<Room> roomsRepository)
         {
@@ -57,6 +52,10 @@ namespace Logic
         public void AddOrder(object param)
         {
             Order = (Order)param;
+            if (Order.Room == -1 || Order.Number_of_people <= 0 || Order.Client == -1)
+            {
+                throw new HostelException("данные не корректны");
+            }
             if (Order.In_day >= Order.Out_day) { throw new  HostelException("Дата заселения должна быть меньше даты выселения");  }
             Order.Number_of_days = (Order.Out_day - Order.In_day).Days;
             if (Order.Number_of_days < 0) { Order.Number_of_days = 0; }
@@ -66,7 +65,7 @@ namespace Logic
             if (withNoAvailableRooms is not null && withNoAvailableRooms.Count > 0)
             { throw new HostelException($"Комната занята с {withNoAvailableRooms[0].In_day} по {withNoAvailableRooms[0].Out_day}"); }  
             else if (withNoAvailableClient is not null && withNoAvailableClient.Count > 0)
-            { throw new HostelException($"Клиет уже заселен в комнату {withNoAvailableClient[0].Room} с {withNoAvailableClient[0].In_day} по {withNoAvailableClient[0].Out_day}");}
+            { throw new HostelException($"Клиент уже заселен в комнату {withNoAvailableClient[0].Room} с {withNoAvailableClient[0].In_day} по {withNoAvailableClient[0].Out_day}");}
             double cost_per_day = roomsRepository.GetById(Order.Room).Cost_per_day;
             Order.Total_cost = (double)(Order.Number_of_days * cost_per_day);
             ordersRepository.Add(Order);

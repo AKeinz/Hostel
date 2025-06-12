@@ -19,25 +19,6 @@ namespace Logic
             set { problems = value; OnPropertyChanged(nameof(Problems)); }
         }
         public List<int> Room_numbers;
-        private int user_id;
-        private string description;
-        private int room;
-
-        public int User_id
-        {
-            get { return user_id; }
-            set { user_id = value; OnPropertyChanged("User_id"); }
-        }
-        public string Description
-        {
-            get { return description; }
-            set { description = value; OnPropertyChanged("Description"); }
-        }
-        public int Room
-        {
-            get { return room; }
-            set { room = value; OnPropertyChanged(nameof(Room)); }
-        }
 
         public ProblemsLogic(IRepository<Problem> problemsRepository, IRepository<Room> roomsRepository)
         {
@@ -59,17 +40,6 @@ namespace Logic
         {
             Problems = problemsRepository.GetAll().ToList();
             return Problems;
-        }
-        public (List<Problem> probs, List<string> us) GetProblemsWithUsers()
-        {
-            List<string> users = new List<string>();
-            Problems = problemsRepository.GetAll().ToList();
-            foreach (Problem problem in Problems)
-            {
-                User u = usersRepository.GetById(problem.User);
-                users.Add($"({u.Id}) {u.Lastname} {u.Firstname} {u.Patronymic}");
-            }
-            return (Problems, users);
         }
 
         public List<int> GetRoomNumbers()

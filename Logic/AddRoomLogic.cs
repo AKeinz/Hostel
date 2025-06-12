@@ -57,7 +57,7 @@ namespace Logic
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Ошибка при копировании: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine("не удалось скопировать фото");
                 return false;
             }
         }
@@ -66,6 +66,10 @@ namespace Logic
         {
 
             New_room = param;
+            if (New_room.Capacity < 1 || New_room.Cost_per_day <=0)
+            {
+                throw new HostelException("данные не корректны");
+            }
             try
             {
                 New_room.Room_number = roomsRepository.GetMaxId() + 1;
@@ -80,7 +84,7 @@ namespace Logic
             }
             else
             {
-                throw new HostelException("Фото не найдено");
+                throw new HostelException("не удалось скопировать фото");
             }
 
         }

@@ -8,8 +8,8 @@ namespace Model
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } = 0;
-        public int Room { get; set; } = 0;
-        public int Client { get; set; }
+        public int Room { get; set; } = -1;
+        public int Client { get; set; } = -1;
         public DateTime In_day { get; set; } = DateTime.Now.Date;
         public DateTime Out_day { get; set; } = DateTime.Now.AddDays(1).Date;
         public int Number_of_days { get; set; } = 0;

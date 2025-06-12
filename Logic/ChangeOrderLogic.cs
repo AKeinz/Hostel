@@ -34,6 +34,10 @@ namespace Logic
         public void changeOrder(Order param)
         {
             Order = param;
+            if (Order.Room == -1 || Order.Number_of_people <= 0 || Order.Client == -1)
+            {
+                throw new HostelException("данные не корректны");
+            }
             if (Order.In_day >= Order.Out_day) { throw new HostelException("Дата заселения должна быть меньше даты выселения");}
             Order.Number_of_days = (Order.Out_day - Order.In_day).Days;
 

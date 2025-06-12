@@ -60,7 +60,7 @@ namespace ViewModel
             }
             catch (Exception ex)
             {
-                NotifyError?.Invoke("Ошибка добавления");
+                NotifyError?.Invoke("не удалось сохранить изменения");
             }
         }
 

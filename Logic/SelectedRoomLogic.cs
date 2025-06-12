@@ -43,13 +43,17 @@ namespace Logic
         public void ChangeRoom(Room param)
         {
             Room = param;
+            if (Room.Capacity < 1 || Room.Cost_per_day <= 0)
+            {
+                throw new HostelException("данные не корректны");
+            }
             if (copyPhoto())
             {
                 roomsRepository.Update(Room);
             }
             else
             {
-                throw new HostelException("Фото не найдено");
+                throw new HostelException("не удалось скопировать фото");
             }
         }
 
@@ -85,15 +89,6 @@ namespace Logic
             }
         }
 
-        public void DeleteRoom(object param)
-        {
-            roomsRepository.Delete(Room);
-            string photoPath = (Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "RoomPhotos", Room.Room_number.ToString()));
-            if (Directory.Exists(photoPath))
-            {
-                Directory.Delete(photoPath, true);
-            }
-        }
 
         public void DeleteRoom(Room param)
         {

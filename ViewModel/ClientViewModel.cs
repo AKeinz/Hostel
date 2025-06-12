@@ -37,12 +37,6 @@ namespace ViewModel
             set { description = value; OnPropertyChanged("Description"); }
         }
 
-        private List<int> room_numbers = new List<int>();
-        public List<int> Room_numbers
-        {
-            get { return room_numbers; }
-            set { room_numbers = value; OnPropertyChanged("Room_numbers"); }
-        }
         public ICommand AddProblemCommand { get; set; }
         public ICommand DisplaySelectRoomCommand { get; set; }
 
